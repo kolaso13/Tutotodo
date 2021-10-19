@@ -6,3 +6,4 @@ var sistema = new Sistema();
 var vista = new Vista();
 var Controlador = new Controlador(sistema,vista);
 
+Controlador.Run();

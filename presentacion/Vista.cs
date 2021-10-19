@@ -31,19 +31,20 @@ class Vista
             }
         }
     }
-    public void MostrarListaEnumerada<T>(string titulo, List<T> valores)
+    public void MostrarListaEnumerada<T>(string titulo, IEnumerable<T> valores)
     {
         Display(titulo);
-        for (int i = 0; i < valores.Count; i++)
+        for (int i = 0; i < valores.Count(); i++)
         {
-            WriteLine($"{i + 1:##}.- {valores[i].ToString()}");
+            WriteLine($"{i + 1:##}.- {valores.ElementAt(i).ToString()}");
         }
     }
-    public T TrySeleccionarOpcionDeListaEnumerada<T>(string titulo, List<T> lista, string prompt)
+    public T TrySeleccionarOpcionDeListaEnumerada<T>
+    (string titulo, IEnumerable<T> lista, string prompt)
     {
         MostrarListaEnumerada(titulo, lista);
         int input = 0;
-        while (input < 1 || input > lista.Count)
+        while (input < 1 || input > lista.Count())
             try
             {
                 input = TryObtenerEntradaDeTipo<int>(prompt);

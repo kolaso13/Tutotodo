@@ -21,12 +21,32 @@ class Controlador
     }
 
     public void Run(){
-            var opc =
+        try{
+            var menu = new List<string>{ "uno","dos"};
+            var key =
             _vista.TrySeleccionarOpcionDeListaEnumerada<String>(
                 "TITULO",
-                new List<string>{ "uno","dos"},
+                menu,
                 "Elige una opcion"
             );
+
+            _casosDeUso[key].Invoke();
+
+            _vista.Display($"escogido {key}");
+            switch (menu.FindIndex(e => e == key))
+            {
+                case 1: _vista.Display("Ejecutar el caso de uso 1"); 
+                break;
+
+                case 2: _vista.Display("Ejecutar el caso de uso 2"); 
+                break;
+
+                case 3: _vista.Display("Ejecutar el cosas nuevas"); 
+                break;
+            }
+        }catch{
+            _vista.Display("Agur usuario");
+        }
     }
     void CasoDeUso1()
     {
