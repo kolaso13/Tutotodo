@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
+
+using System.Linq;
 class Controlador
 {
     private Sistema _sistema;
     private Vista _vista;
-
     Dictionary<string, Action> _casosDeUso;
 
     public Controlador(Sistema sistema, Vista vista)
@@ -15,45 +16,60 @@ class Controlador
                 // Action = Func sin valor de retorno
                 { "Caso de Uso 1", CasoDeUso1 },
                 { "Caso de Uso 2", CasoDeUso2 },
+                {"PruebasDeObtenerEntradaDeTipo", PruebasDeObtenerEntradaDeTipo },
                 // Lambda
                 { "Obtener la luna",() => vista.Display($"Caso de uso no implementado") },
             };
     }
 
-    public void Run(){
-        try{
-            var menu = new List<string>{ "uno","dos"};
-            var key =
-            _vista.TrySeleccionarOpcionDeListaEnumerada<String>(
-                "TITULO",
-                menu,
-                "Elige una opcion"
-            );
-
-            _casosDeUso[key].Invoke();
-
-            _vista.Display($"escogido {key}");
-            switch (menu.FindIndex(e => e == key))
+    public void Run()
+    {
+        try
+        {
+            while (true)
             {
-                case 1: _vista.Display("Ejecutar el caso de uso 1"); 
-                break;
-
-                case 2: _vista.Display("Ejecutar el caso de uso 2"); 
-                break;
-
-                case 3: _vista.Display("Ejecutar el cosas nuevas"); 
-                break;
+                var key =
+                _vista.TrySeleccionarOpcionDeListaEnumerada<string>(
+                    "TITULO DE APLICACION", _casosDeUso.Keys,
+                    "Selecciona un CASO DE USO"
+                );
+                _casosDeUso[key].Invoke();
             }
-        }catch{
+        }
+        catch
+        {
             _vista.Display("Agur usuario");
         }
+
     }
     void CasoDeUso1()
     {
-
+        _vista.Display("CASO DE USO 1");
     }
     void CasoDeUso2()
     {
-
+        _vista.Display("CASO DE USO 2");
     }
+
+    void PruebasDeObtenerEntradaDeTipo()
+        {
+            try
+            {
+
+                var i = _vista.TryObtenerEntradaDeTipo<int>("un int");
+                var j = _vista.TryObtenerEntradaDeTipo<int>("un int");
+                var data = new DataModel{
+                    a = i,
+                    b = j
+                };
+
+                var res = _sistema.Metodo1(data);
+                _vista.Display($"El resultado es {res}");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return;
+            }
+        }
 }
