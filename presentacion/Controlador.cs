@@ -16,7 +16,7 @@ class Controlador
                 // Action = Func sin valor de retorno
                 { "Caso de Uso 1", CasoDeUso1 },
                 { "Caso de Uso 2", CasoDeUso2 },
-                {"PruebasDeObtenerEntradaDeTipo", PruebasDeObtenerEntradaDeTipo },
+                { "Hola Tipo<???>", PruebasDeObtenerEntradaDeTipo },
                 // Lambda
                 { "Obtener la luna",() => vista.Display($"Caso de uso no implementado") },
             };
@@ -30,7 +30,8 @@ class Controlador
             {
                 var key =
                 _vista.TrySeleccionarOpcionDeListaEnumerada<string>(
-                    "TITULO DE APLICACION", _casosDeUso.Keys,
+                    "TITULO DE APLICACION", 
+                    _casosDeUso.Keys,
                     "Selecciona un CASO DE USO"
                 );
                 _casosDeUso[key].Invoke();
@@ -52,24 +53,25 @@ class Controlador
     }
 
     void PruebasDeObtenerEntradaDeTipo()
+    {
+        try
         {
-            try
-            {
+            /*
+            var s = _vista.TryObtenerEntradaDeTipo<string>("un string");
+            var d = _vista.TryObtenerEntradaDeTipo<decimal>("un decimal");
+            var f = _vista.TryObtenerEntradaDeTipo<float>("un float");
+            */
+            var i = _vista.TryObtenerEntradaDeTipo<int>("un int");
+            var i2 = _vista.TryObtenerEntradaDeTipo<int>("un int2");
+            var data = new DataModel { a = i, b = i2 };
+            var result = _sistema.SumaDataOno(data);
+            _vista.Display($"El resultado es {result}");
 
-                var i = _vista.TryObtenerEntradaDeTipo<int>("un int");
-                var j = _vista.TryObtenerEntradaDeTipo<int>("un int");
-                var data = new DataModel{
-                    a = i,
-                    b = j
-                };
-
-                var res = _sistema.Metodo1(data);
-                _vista.Display($"El resultado es {res}");
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return;
-            }
         }
+        catch (Exception e)
+        {
+            _vista.Display(e.Message);
+            return;
+        }
+    }
 }

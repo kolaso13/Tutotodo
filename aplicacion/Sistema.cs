@@ -1,14 +1,15 @@
 using System.Collections.Generic;
-
 class Sistema
 {
-    //Datos
+    // Datos
     List<int> data = new();
 
-    //Metodos de un leguanje empresarial
-
-    int Metodo1(int param1, int param2){
-        if(param1 > 7) return -3;
-        return param1+param2;
+    // Metodos de en lenguaje empresarial
+    public int SumaDataOno( DataModel data ){
+        if(data.a>7) return -3;
+        if(data.SonIguales()) return 5;
+     
+        return data.a + data.b;
     }
+
 }
